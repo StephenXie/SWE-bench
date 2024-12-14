@@ -12,17 +12,16 @@ REPO_TARGET=$1
 gh repo view "$REPO_TARGET" > /dev/null || exit 1
 
 # Set the organization and repository names
-ORG_NAME="swe-bench"
+ORG_NAME="StephenXie"
 NEW_REPO_NAME="${REPO_TARGET//\//__}"
 
 # Check if the new repository already exists
-gh repo view "$ORG_NAME/$NEW_REPO_NAME" > /dev/null 2>&1
-if [ $? -eq 0 ]; then
+if ! gh repo view "$ORG_NAME/$NEW_REPO_NAME" > /dev/null 2>&1; then
+    echo "Repository $ORG_NAME/$NEW_REPO_NAME does not exist."
+    gh repo create "$ORG_NAME/$NEW_REPO_NAME" --private
+else
     echo "The repository $ORG_NAME/$NEW_REPO_NAME already exists."
     exit 1
-else
-    # Create mirror repository
-    gh repo create "$ORG_NAME/$NEW_REPO_NAME" --private
 fi
 
 # Check if the repository creation was successful
@@ -53,6 +52,11 @@ cd "$TARGET_REPO_DIR"; git push --mirror git@github.com:$ORG_NAME/$NEW_REPO_NAME
 cd ..; rm -rf "$TARGET_REPO_DIR"
 
 # Clone the mirror repository
+if [ -d "$NEW_REPO_NAME" ]; then
+    echo "Directory $NEW_REPO_NAME already exists. Removing it to proceed with cloning."
+    rm -rf "$NEW_REPO_NAME"
+fi
+
 git clone git@github.com:$ORG_NAME/$NEW_REPO_NAME.git
 
 # Delete .github/workflows if it exists
@@ -64,10 +68,26 @@ if [ -d "$NEW_REPO_NAME/.github/workflows" ]; then
     cd "$NEW_REPO_NAME";
     git add -A;
     git commit -m "Removed .github/workflows";
-    git push origin main;  # Change 'master' to your desired branch
+
+    # Check for existing branches and push to the first one found
+    if git show-ref --quiet refs/heads/main; then
+        git push origin main;
+    elif git show-ref --quiet refs/heads/master; then
+        git push origin master;
+    else
+        # List all branches and push to the first one found
+        DEFAULT_BRANCH=$(git branch -r | grep -v '\->' | sed 's/.*origin\///' | head -n 1)
+        if [ -n "$DEFAULT_BRANCH" ]; then
+            git push origin "$DEFAULT_BRANCH";
+        else
+            echo "No branches found. Please check the repository setup.";
+            exit 1;
+        fi
+    fi
+
     cd ..;
 else
-    echo "$REPO_NAME/.github/workflows does not exist. No action required."
+    echo "$NEW_REPO_NAME/.github/workflows does not exist. No action required."
 fi
 
 rm -rf "$NEW_REPO_NAME"

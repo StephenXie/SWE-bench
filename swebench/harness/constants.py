@@ -54,7 +54,7 @@ TEST_PYTEST_VERBOSE = "pytest -rA --tb=long"
 TEST_SPHINX = "tox --current-env -epy39 -v --"
 TEST_SYMPY = "PYTHONWARNINGS='ignore::UserWarning,ignore::SyntaxWarning' bin/test -C --verbose"
 TEST_SYMPY_VERBOSE = "bin/test -C --verbose"
-
+TEST_FASTAPI = "pytest -rA"
 
 # Constants - Installation Specifications
 SPECS_SKLEARN = {
@@ -908,6 +908,51 @@ SPECS_PYDICOM.update(
 
 SPECS_HUMANEVAL = {k: {"python": "3.9", "test_cmd": "python"} for k in ["1.0"]}
 
+SPECS_FASTAPI = {
+    k: {
+        "python": "3.6",
+        "install": "export LC_ALL=C.UTF-8 && export LANG=C.UTF-8 && pip install 'starlette==0.12.7' 'pydantic==0.30.0' 'databases[sqlite]' hypercorn mypy black jupyter better-exceptions pytest pytest-cov isort requests flit mkdocs mkdocs-material markdown-include autoflake email-validator ujson flake8 python-multipart sqlalchemy uvicorn",
+        "pip_packages": ["pytest"],
+        "test_cmd": TEST_FASTAPI,
+    }
+    for k in [
+        "0.35",
+    ]
+}
+SPECS_FASTAPI.update({
+    k: {
+        "python": "3.6",
+        "install": "export LC_ALL=C.UTF-8 && export LANG=C.UTF-8 && pip install 'starlette==0.12.7' 'pydantic==0.32.2' 'databases[sqlite]' hypercorn mypy black jupyter better-exceptions pytest pytest-cov isort requests flit mkdocs mkdocs-material markdown-include autoflake email-validator ujson flake8 python-multipart sqlalchemy uvicorn",
+        "pip_packages": ["pytest"],
+        "test_cmd": TEST_FASTAPI,
+    }
+    for k in [
+        "0.39",
+    ]
+})
+SPECS_FASTAPI.update({
+    k: {
+        "python": "3.6",
+        "install": "export LC_ALL=C.UTF-8 && export LANG=C.UTF-8 && pip install 'starlette==0.12.9' 'pydantic==1.0.0' 'databases[sqlite]' hypercorn mypy black jupyter better-exceptions pytest pytest-cov isort requests flit mkdocs mkdocs-material markdown-include autoflake email-validator ujson flake8 python-multipart sqlalchemy uvicorn",
+        "pip_packages": ["pytest"],
+        "test_cmd": TEST_FASTAPI,
+    }
+    for k in [
+        "0.45",
+        "0.46"
+    ]
+})
+# SPECS_FASTAPI.update({
+#     k: {
+#         "python": "3.6",
+#         "install": "export LC_ALL=C.UTF-8 && export LANG=C.UTF-8 && pip install 'starlette==0.12.7' 'pydantic==1.0.0' 'databases[sqlite]' hypercorn mypy black jupyter better-exceptions pytest pytest-cov isort requests flit mkdocs mkdocs-material markdown-include autoflake email-validator ujson flake8 python-multipart sqlalchemy uvicorn",
+#         "pip_packages": ["pytest"],
+#         "test_cmd": TEST_FASTAPI,
+#     }
+#     for k in [
+#         "0.46"
+#     ]
+# })
 # Constants - Task Instance Instllation Environment
 MAP_REPO_VERSION_TO_SPECS = {
     "astropy/astropy": SPECS_ASTROPY,
@@ -930,6 +975,7 @@ MAP_REPO_VERSION_TO_SPECS = {
     "sqlfluff/sqlfluff": SPECS_SQLFLUFF,
     "swe-bench/humaneval": SPECS_HUMANEVAL,
     "sympy/sympy": SPECS_SYMPY,
+    "fastapi/fastapi": SPECS_FASTAPI
 }
 
 # Constants - Repository Specific Installation Instructions
@@ -949,6 +995,7 @@ MAP_REPO_TO_REQS_PATHS = {
     "pyvista/pyvista": ["requirements_test.txt", "requirements.txt"],
     "sqlfluff/sqlfluff": ["requirements_dev.txt"],
     "sympy/sympy": ["requirements-dev.txt", "requirements-test.txt"],
+    "fastapi/fastapi": ["Pipfile", "requirements.txt"],
 }
 
 

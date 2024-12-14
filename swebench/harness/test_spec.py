@@ -295,6 +295,8 @@ def make_test_spec(instance: SWEbenchInstance) -> TestSpec:
 
     def _from_json_or_obj(key: str) -> Any:
         """If key points to string, load with json"""
+        if key not in instance:
+            return None
         if isinstance(instance[key], str):
             return json.loads(instance[key])
         return instance[key]
@@ -328,3 +330,4 @@ def make_test_spec(instance: SWEbenchInstance) -> TestSpec:
         FAIL_TO_PASS=fail_to_pass,
         PASS_TO_PASS=pass_to_pass,
     )
+    

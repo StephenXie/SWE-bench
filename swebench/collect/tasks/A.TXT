@@ -1,0 +1,25 @@
+
+FAIL_TO_PASS = [
+    "tests/test_custom_route_class.py::test_route_classes"
+]
+
+PASS_TO_PASS = [
+    "tests/test_custom_route_class.py::test_get_path[/a-200-expected_response0]",
+    "tests/test_custom_route_class.py::test_get_path[/a/b-200-expected_response1]",
+    "tests/test_custom_route_class.py::test_get_path[/a/b/c-200-expected_response2]",
+    "tests/test_custom_route_class.py::test_get_path[/openapi.json-200-expected_response3]"
+]
+
+FAIL_TO_PASS = [
+    "tests/test_inherited_custom_class.py::test_dt"
+]
+
+PASS_TO_PASS = []
+
+FAIL_TO_PASS = [
+    "tests/test_forms_from_non_typing_sequences.py::test_python_list_param_as_form",
+    "tests/test_forms_from_non_typing_sequences.py::test_python_set_param_as_form",
+    "tests/test_forms_from_non_typing_sequences.py::test_python_tuple_param_as_form"
+]
+
+PASS_TO_PASS = []

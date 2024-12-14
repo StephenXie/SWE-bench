@@ -5,6 +5,6 @@
 # * Declare GITHUB_TOKENS=token1,token2,token3...
 
 python get_tasks_pipeline.py \
-    --repos 'scikit-learn/scikit-learn', 'pallets/flask' \
-    --path_prs '<path to folder to save PRs to>' \
-    --path_tasks '<path to folder to save tasks to>'
+    --repos 'fastapi/fastapi' \
+    --path_prs 'PR' \
+    --path_tasks 'tasks_new'
